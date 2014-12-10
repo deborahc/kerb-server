@@ -1,5 +1,6 @@
 #!/bin/bash
-echo "hi there"
-echo $1
+# Set the kerb thing to look for here 
 
 remctl xvm-remote.mit.edu list
+
+# delete ticket? 

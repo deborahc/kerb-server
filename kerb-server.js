@@ -25,37 +25,34 @@ app.post('/', function(req, res){
     console.log('POST /');
     console.dir(req.body.ticket);
     // add logic to put in the right krbccname
-    var fileName = "/tmp/" + "krb5cc_1000_test";
+    var fileName = '/tmp/krb5cc_1000_'+req.body.principal;
+    // var fileName = '/tmp/krb5cc_1000_'+'deborahc';
     fs.writeFile(fileName, req.body.ticket, function(err) {
-    if(err) {
+    if (err) {
 
         console.log(err);
-    } else {
-    	console.log('hello herror');
-
-  		var command = 'sh ' + __dirname + '/kerb.sh' req.body.kerb_location;
-  		console.log(command, 'command');
+    } 
+    else {
+    	// input to tell remctl where to look
+  		var command = 'sh ' + __dirname + '/kerb.sh ' + "'" + fileName + "'";
 
 		exec(command, function(error, stdout, stderr) {
   			// res.send(Buffer.concat(stdout));
   			res.writeHead(200, {'Content-Type': 'text/html'});
   			res.write(stdout);
 
-			res.end('thanks');
+			res.end('bye');
 
 		    console.log('stdout: ' + stdout);
 		    console.log('stderr: ' + stderr);
 		    if (error !== null) {
-  				res.send(500); // when the script fails, generate a Server Error HTTP response
-
+  				res.send(500); // if the script fails, send 500
 		        console.log('exec error: ' + error);
 		    }
 		});
 
-  	}
-    
-    // then force the xvm stuff to happen 
-}); 
+  		}
+    }); 
 
 });
 app.listen(8080);
