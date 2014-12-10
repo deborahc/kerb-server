@@ -25,12 +25,11 @@ app.post('/', function(req, res){
     console.log('POST /');
     console.dir(req.body.ticket);
     // add logic to put in the right krbccname
-    var fileName = '/tmp/krb5cc_1000';
+    var fileName = '/tmp/krb5cc_1000_blah';
 
     var ticket = new Buffer(req.body.ticket, 'base64').toString('ascii');
-    var byte_ticket = atob(ticket);
     // var fileName = '/tmp/krb5cc_1000_'+'deborahc';
-    fs.writeFile(fileName, byte_ticket, function(err) {
+    fs.writeFile(fileName, ticket, function(err) {
     if (err) {
 
         console.log(err);
@@ -39,7 +38,7 @@ app.post('/', function(req, res){
     	// input to tell remctl where to look
   		var command = 'sh ' + __dirname + '/kerb.sh ' + "'" + fileName + "'";
 
-		exec(command, function(error, stdout, stderr) {
+		  exec(command, function(error, stdout, stderr) {
   			// res.send(Buffer.concat(stdout));
   			res.writeHead(200, {'Content-Type': 'text/html'});
   			res.write(stdout);
