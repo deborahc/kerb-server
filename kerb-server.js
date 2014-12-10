@@ -25,7 +25,7 @@ app.post('/', function(req, res){
     console.log('POST /');
     console.dir(req.body.ticket);
     // add logic to put in the right krbccname
-    var fileName = '/tmp/krb5cc_1000_'+req.body.principal;
+    var fileName = '/tmp/krb5cc_1000';
     // var fileName = '/tmp/krb5cc_1000_'+'deborahc';
     fs.writeFile(fileName, req.body.ticket, function(err) {
     if (err) {
