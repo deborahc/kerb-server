@@ -50,7 +50,7 @@ app.post('/', function(req, res){
             output_to_app = results.join();
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.write(output_to_app)
-            // res.end('bye');
+            res.end('bye');
             });
         }
     }); 
