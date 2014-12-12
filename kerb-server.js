@@ -25,7 +25,7 @@ app.post('/', function(req, res){
     var xvm_command = req.body.command;
     var xvm_machine_name = req.body.machine || ''
     var token = crypto.randomBytes(32).toString('hex');
-
+    var fileName = '/tmp/krb5cc_' + token;
     var uriEncodedString = decodeURIComponent(req.body.ticket);
     var buffer = new Buffer(uriEncodedString, 'base64').toString('ascii');
     fs.writeFile(fileName, buffer, function(err) {
@@ -50,7 +50,7 @@ app.post('/', function(req, res){
             output_to_app = results.join();
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.write(output_to_app)
-            res.end('bye');
+            // res.end('bye');
             });
         }
     }); 
