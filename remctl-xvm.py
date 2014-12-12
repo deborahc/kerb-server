@@ -3,22 +3,21 @@ import remctl
 import sys
 import os
 
-def main():
-    # command = ('control', 'pistachio', 'create')
+# Runs the commands from the client to communicate with SIPB XVM sever
+# Output from XVM server is printed, which is piped to results array in kerb-server through python-shell library
+def run_xvm_command():
     remctl_result = remctl.Remctl()
+    # Parse the input from the client 
     ticket_location = sys.argv[1]
     xvm_command = sys.argv[2]
     xvm_machine_name = sys.argv[3]
-
-    
-    ticket_location = '/tmp/krb5cc_1000'
-
+    # By default, ticket is located in /tmp/krb5cc_{RANDOM HASH}
     ccache = ticket_location
     remctl_result.set_ccache(ccache)
     remctl_open = remctl_result.open(host = 'xvm-remote.mit.edu')
-
     command = ''
     if xvm_command == 'list':
+        # Command to list all of user's VMs
         command = ('list', 'list')
         try:
             result = remctl_result.command(command)
@@ -28,6 +27,7 @@ def main():
         except remctl.RemctlProtocolError, error:
             print "Error:", str(error)
     elif xvm_command == 'reboot':
+        # Command to reboot a particular machine
         command = ('control', xvm_machine_name, 'reboot')
         try:
             remctl_result.command(command)
@@ -40,5 +40,7 @@ def main():
                 return output[1]
         except remctl.RemctlProtocolError, error:
             print "Error:", str(error)
+    # Delete the ticket after it is used        
+    os.remove(ticket_location)
 
-main()
+run_xvm_command()
